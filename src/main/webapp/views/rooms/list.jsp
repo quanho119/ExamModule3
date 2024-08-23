@@ -3,6 +3,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%List<Room> rooms = (List<Room>) request.getAttribute("rooms");%>
 <html lang="en">
 <head>
@@ -15,7 +16,7 @@
 <body>
 <div class="container mt-5">
     <a href="${pageContext.request.contextPath}/rooms" class="text-decoration-none">
-        <h1 class="mb-4 text-primary">Hotel Rooms List</h1>
+        <h1 class="mb-4 text-primary">Danh sách phòng</h1>
     </a>
     <div class="mb-3">
         <a href="${pageContext.request.contextPath}/rooms/create" class="btn btn-primary">Tạo</a>
@@ -27,7 +28,6 @@
             <input type="text" name="keyword" id="search" class="form-control" placeholder="Search...">
         </div>
         <button type="submit" class="btn btn-secondary">Tìm</button>
-        <input type="reset" value="Reset" class="btn btn-secondary ml-2">
     </form>
 
     <table class="table table-bordered table-hover">
@@ -48,12 +48,13 @@
         <c:forEach var="room" items="${rooms}">
             <tr>
                 <td><c:out value="${index}" /></td>
-                <td><c:out value="${room.id}" /></td>
+                <td><c:out value='${String.format("PT-%03d", room.id)}' /></td>
                 <td><c:out value="${room.tenantName}" /></td>
                 <td><c:out value="${room.phoneNumber}" /></td>
-                <td><c:out value="${room.startDate}" /></td>
+                <td><fmt:formatDate value="${room.startDate}" pattern="dd/MM/yyyy" /></td>
                 <td><c:out value="${room.paymentMethod}" /></td>
                 <td><c:out value="${room.notes}" /></td>
+                <td><input type="checkbox"></td>
             </tr>
             <c:set var="index" value="${index + 1}"/>
         </c:forEach>

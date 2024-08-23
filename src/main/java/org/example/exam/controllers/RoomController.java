@@ -40,18 +40,40 @@ public class RoomController extends HttpServlet {
 //                case "/delete":
 //                    this.deleteRoom(req, resp);
 //                    break;
-//                case "/search":
-//                    this.searchRoom(req, resp);
-//                    break;
+                case "/search":
+                    this.searchRoom(req, resp);
+                    break;
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
 
+
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String url = req.getPathInfo();
+        try {
+            switch (Objects.requireNonNull(url)) {
+                case "/create":
+                    this.createRoom(req, resp);
+                    break;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    private void searchRoom(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
+        List<Room> rooms = this.roomService.getRoomByKeyWord(req);
+        req.setAttribute("rooms", rooms);
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/views/rooms/list.jsp");
+        requestDispatcher.forward(req, resp);
+    }
 
+    private void createRoom(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException {
+        this.roomService.create(req, resp);
+        resp.sendRedirect("/rooms/");
     }
 
 
@@ -64,7 +86,9 @@ public class RoomController extends HttpServlet {
 
     private void renderRoomCreate(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
         List<Method> methods = this.methodService.getMethods();
-        req.setAttribute("method", methods);
+        int id = this.roomService.getIdMax()+1;
+        req.setAttribute("methods", methods);
+        req.setAttribute("id",id);
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("/views/rooms/create.jsp");
         requestDispatcher.forward(req, resp);
     }

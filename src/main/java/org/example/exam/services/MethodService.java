@@ -15,12 +15,12 @@ public class MethodService {
     }
 
     public List<Method> getMethods() throws SQLException {
-        List<Method> methods = new ArrayList<Method>();
+        List<Method> methods = new ArrayList<>();
         ResultSet rs = methodModel.getMethods();
         while (rs.next()) {
-            int id = rs.getInt("id");
-            String name = rs.getString("name");
-            Method method = new Method(name);
+            int id = rs.getInt("PaymentMethodID");
+            String paymentType = rs.getString("PaymentType");
+            Method method = new Method(paymentType);
             method.setId(id);
             methods.add(method);
         }

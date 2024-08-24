@@ -48,4 +48,11 @@ public class RoomModel {
         ps.setInt(3, numberPart);
         return ps.executeQuery();
     }
+
+    public void removeRoom(int id) throws SQLException {
+        String sql = "DELETE FROM RoomInfo WHERE RoomID =?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setInt(1, id);
+        ps.executeUpdate();
+    }
 }

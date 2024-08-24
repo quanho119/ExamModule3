@@ -2,7 +2,7 @@
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%List<Room> rooms = (List<Room>) request.getAttribute("rooms");%>
 <html lang="en">
@@ -29,40 +29,41 @@
         </div>
         <button type="submit" class="btn btn-secondary">Tìm</button>
     </form>
-
-    <table class="table table-bordered table-hover">
-        <thead class="thead-dark">
-        <tr>
-            <th>STT</th>
-            <th>Mã phòng trọ</th>
-            <th>Tên người thuê trọ</th>
-            <th>Số điện thoại</th>
-            <th>Ngày bắt đầu thuê</th>
-            <th>Hình thức thanh toán</th>
-            <th>Ghi chú</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:set var="index" value="1"/>
-        <c:forEach var="room" items="${rooms}">
+    <form action="${pageContext.request.contextPath}/rooms/delete" method="get">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark">
             <tr>
-                <td><c:out value="${index}" /></td>
-                <td><c:out value='${String.format("PT-%03d", room.id)}' /></td>
-                <td><c:out value="${room.tenantName}" /></td>
-                <td><c:out value="${room.phoneNumber}" /></td>
-                <td><fmt:formatDate value="${room.startDate}" pattern="dd/MM/yyyy" /></td>
-                <td><c:out value="${room.paymentMethod}" /></td>
-                <td><c:out value="${room.notes}" /></td>
-                <td><input type="checkbox"></td>
+                <th>STT</th>
+                <th>Mã phòng trọ</th>
+                <th>Tên người thuê trọ</th>
+                <th>Số điện thoại</th>
+                <th>Ngày bắt đầu thuê</th>
+                <th>Hình thức thanh toán</th>
+                <th>Ghi chú</th>
+                <th></th>
             </tr>
-            <c:set var="index" value="${index + 1}"/>
-        </c:forEach>
-        </tbody>
-    </table>
-    <div class="mb-3">
-        <a href="${pageContext.request.contextPath}/rooms/delete?id=${room.getId()}" class="btn btn-danger">Xóa</a>
-    </div>
+            </thead>
+            <tbody>
+            <c:set var="index" value="1"/>
+            <c:forEach var="room" items="${rooms}">
+                <tr>
+                    <td><c:out value="${index}"/></td>
+                    <td><c:out value='${String.format("PT-%03d", room.id)}'/></td>
+                    <td><c:out value="${room.tenantName}"/></td>
+                    <td><c:out value="${room.phoneNumber}"/></td>
+                    <td><fmt:formatDate value="${room.startDate}" pattern="dd/MM/yyyy"/></td>
+                    <td><c:out value="${room.paymentMethod}"/></td>
+                    <td><c:out value="${room.notes}"/></td>
+                    <td><input type="checkbox" name="roomIds" value="${room.id}"></td>
+                </tr>
+                <c:set var="index" value="${index + 1}"/>
+            </c:forEach>
+            </tbody>
+        </table>
+        <div class="mb-3">
+            <input type="submit" value="Xóa" class="btn btn-primary">
+        </div>
+    </form>
 </div>
 
 

@@ -37,9 +37,9 @@ public class RoomController extends HttpServlet {
                 case "/create":
                     this.renderRoomCreate(req, resp);
                     break;
-//                case "/delete":
-//                    this.deleteRoom(req, resp);
-//                    break;
+                case "/delete":
+                    this.deleteRoom(req, resp);
+                    break;
                 case "/search":
                     this.searchRoom(req, resp);
                     break;
@@ -48,7 +48,6 @@ public class RoomController extends HttpServlet {
             System.out.println(e.getMessage());
         }
     }
-
 
 
     @Override
@@ -64,6 +63,12 @@ public class RoomController extends HttpServlet {
             System.out.println(e.getMessage());
         }
     }
+
+    private void deleteRoom(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException {
+        this.roomService.deleteRoom(req, resp);
+        resp.sendRedirect("/rooms/");
+    }
+
     private void searchRoom(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
         List<Room> rooms = this.roomService.getRoomByKeyWord(req);
         req.setAttribute("rooms", rooms);

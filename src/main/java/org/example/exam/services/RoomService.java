@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 public class RoomService {
-    private RoomModel roomModel;
+    private final RoomModel roomModel;
 
     public RoomService() {
         roomModel = new RoomModel();
@@ -31,7 +31,7 @@ public class RoomService {
             int paymentTypeID = resultSet.getInt("PaymentMethodID");
             String paymentType = resultSet.getString("PaymentType");
             String notes = resultSet.getString("Notes");
-            Room room = new Room(tenantName,phoneNumber,startdate,paymentTypeID,notes);
+            Room room = new Room(tenantName, phoneNumber, startdate, paymentTypeID, notes);
             room.setId(id);
             room.setPaymentMethod(paymentType);
             rooms.add(room);
@@ -49,7 +49,7 @@ public class RoomService {
     }
 
     public void create(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
-        int id = getIdMax()+1;
+        int id = getIdMax() + 1;
         String tenantName = req.getParameter("TenantName");
         String phoneNumber = req.getParameter("PhoneNumber");
         String startDateStr = req.getParameter("StartDate");
@@ -85,5 +85,13 @@ public class RoomService {
             rooms.add(room);
         }
         return rooms;
+    }
+
+    public void deleteRoom(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+        String[] roomIds = req.getParameterValues("roomIds");
+        for (String roomId : roomIds) {
+            int id = Integer.parseInt(roomId);
+            this.roomModel.removeRoom(id);
+        }
     }
 }
